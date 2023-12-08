@@ -8,12 +8,10 @@ from torch.utils.data import DataLoader
 # from torchvision.datasets import ImageFolder
 from torchvision.models import ResNet152_Weights, resnet152
 from tqdm.autonotebook import tqdm
-
-
 def train():
     train_path = "data/train_11k"
     val_path = "data/val"
-    test_path = "data/test_labeled"
+    # test_path = "data/test_labeled"
 
     batch_size = 256
     # shuffle = False
@@ -37,7 +35,7 @@ def train():
 
     train_dataset = torchvision.datasets.ImageFolder(train_path, transform=preprocess)
     val_dataset = torchvision.datasets.ImageFolder(val_path, transform=preprocess)
-    test_dataset = torchvision.datasets.ImageFolder(test_path, transform=preprocess)
+    # test_dataset = torchvision.datasets.ImageFolder(test_path, transform=preprocess)
 
     train_dataloader = DataLoader(
         train_dataset,
@@ -53,13 +51,13 @@ def train():
         drop_last=False,
         num_workers=num_workers,
     )
-    test_dataloader = DataLoader(
-        test_dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        drop_last=False,
-        num_workers=num_workers,
-    )
+    # test_dataloader = DataLoader(
+    #     test_dataset,
+    #     batch_size=batch_size,
+    #     shuffle=False,
+    #     drop_last=False,
+    #     num_workers=num_workers,
+    # )
 
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
