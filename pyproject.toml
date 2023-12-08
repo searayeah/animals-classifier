@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "mlops-hw-1"
+version = "0.1.0"
+description = ""
+authors = ["vslitvinov"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torch = "^2.1.1"
+torchvision = "^0.16.1"
+tqdm = "^4.66.1"
+pre-commit = "^3.5.0"
+dvc = {extras = ["gdrive"], version = "^3.33.3"}
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+black = "^23.11.0"
+isort = "^5.12.0"
+pylint = "^3.0.2"
+dvc = {extras = ["gdrive"], version = "^3.33.3"}
+pre-commit = "^3.5.0"
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+lines_after_imports = 2
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
