@@ -21,7 +21,7 @@ def train():
     # drop_last = False
     num_workers = 4
     learning_rate = 0.00001
-    num_epochs = 10
+    num_epochs = 20
 
     weights = ResNet152_Weights.DEFAULT
     model = resnet152(weights=weights)
