@@ -8,6 +8,8 @@ from torch.utils.data import DataLoader
 # from torchvision.datasets import ImageFolder
 from torchvision.models import ResNet152_Weights, resnet152
 from tqdm.autonotebook import tqdm
+
+
 def train():
     train_path = "data/train_11k"
     val_path = "data/val"
