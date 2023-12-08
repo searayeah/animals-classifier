@@ -14,6 +14,7 @@ def train():
     train_path = "data/train_11k"
     val_path = "data/val"
     # test_path = "data/test_labeled"
+    # test_path = "data/test_labeled"
 
     batch_size = 256
     # shuffle = False
@@ -64,7 +65,7 @@ def train():
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-    for epoch in range(num_epochs):
+    for _epoch in range(num_epochs):
         model.train()
 
         losses = []
