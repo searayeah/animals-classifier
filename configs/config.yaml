@@ -1,0 +1,8 @@
+train_path: "data/train_11k"
+val_path: "data/val"
+test_path: "data/test_labeled"
+batch_size: 256
+num_workers: 4
+learning_rate: 0.001
+num_epochs: 5
+mlflow_tracking_uri: "http://128.0.1.1:8080"
