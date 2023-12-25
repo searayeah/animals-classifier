@@ -12,11 +12,11 @@ from tqdm.autonotebook import tqdm
 
 @hydra.main(version_base=None, config_path="../configs", config_name="config")
 def infer(cfg: DictConfig):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     model = resnet18()
     model.fc = nn.Linear(in_features=512, out_features=1)
-    model.load_state_dict(torch.load("models/resnet18.pt"))
+    model.load_state_dict(torch.load("models/resnet18.pt", map_location=device))
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
 
     weights = ResNet18_Weights.DEFAULT
