@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "animals_classifier"
+name = "animals-classifier"
 version = "0.1.0"
 description = ""
 authors = ["vslitvinov"]
@@ -21,7 +21,7 @@ black = "^23.11.0"
 isort = "^5.12.0"
 pylint = "^3.0.2"
 pre-commit = "^3.5.0"
-dvc = {extras = ["gdrive"], version = "^3.33.3"}
+dvc = { extras = ["gdrive"], version = "^3.33.3" }
 mypy = "^1.7.1"
 flake8-bugbear = "^23.12.2"
 flake8-pyproject = "^1.2.3"

@@ -2,38 +2,13 @@ import hydra
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn as nn
-import torchvision
+from dataset import get_test_data
+from model import get_model
 from omegaconf import DictConfig
-from torch.utils.data import DataLoader
-from torchvision.models import ResNet18_Weights, resnet18
 from tqdm.autonotebook import tqdm
 
 
-@hydra.main(version_base=None, config_path="../configs", config_name="config")
-def infer(cfg: DictConfig):
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = resnet18()
-    model.fc = nn.Linear(in_features=512, out_features=1)
-    model.load_state_dict(torch.load("models/resnet18.pt", map_location=device))
-
-    model.to(device)
-
-    weights = ResNet18_Weights.DEFAULT
-    preprocess = weights.transforms()
-
-    test_dataset = torchvision.datasets.ImageFolder(
-        cfg["train_path"], transform=preprocess
-    )
-
-    test_dataloader = DataLoader(
-        test_dataset,
-        batch_size=cfg["batch_size"],
-        shuffle=False,
-        drop_last=False,
-        num_workers=cfg["num_workers"],
-    )
-
+def predict(model, test_dataloader, device):
     model.eval()
     correct = 0
     total = 0
@@ -53,11 +28,31 @@ def infer(cfg: DictConfig):
     test_accuracy = correct / total
 
     tqdm.write(f"Test accuracy: {test_accuracy}")
+    return answers
 
-    df = pd.DataFrame(test_dataset.imgs, columns=["image_path", "true_label"])
 
-    df["predicted"] = np.concatenate(answers)
-    df.to_csv("pred.csv", index=False)
+@hydra.main(version_base=None, config_path="../configs", config_name="config")
+def infer(cfg: DictConfig):
+    model, preprocess = get_model(cfg["model_name"])
+
+    if cfg["device"].startswith("cuda"):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+    else:
+        device = "cpu"
+
+    model.load_state_dict(torch.load("models/resnet18.pt", map_location=device))
+    model.to(device)
+
+    test_dataset, test_dataloader = get_test_data(
+        cfg["test_path"], preprocess, cfg["batch_size"], cfg["num_workers"]
+    )
+
+    answers = predict(model, test_dataloader, device)
+
+    answers_df = pd.DataFrame(test_dataset.imgs, columns=["image_path", "true_label"])
+
+    answers_df["predicted"] = np.concatenate(answers)
+    answers_df.to_csv("pred.csv", index=False)
 
 
 if __name__ == "__main__":
